@@ -49,10 +49,10 @@ typedef struct
     uint32_t size;
 } __attribute__((packed)) DirectoryEntry;
 
-BootSector g_bootSector;
-uint8_t *g_fat = NULL;
-DirectoryEntry *g_rootDir = NULL;
-uint32_t g_rootDirEnd;
+static BootSector g_bootSector;
+static uint8_t *g_fat = NULL;
+static DirectoryEntry *g_rootDir = NULL;
+static uint32_t g_rootDirEnd;
 
 bool readBootSector(FILE *disk) {
     return fread(&g_bootSector, sizeof(g_bootSector), 1, disk) > 0;

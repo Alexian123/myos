@@ -5,3 +5,4 @@ build/
 *.bin
 *.map
 *.img
+bigtext.txt

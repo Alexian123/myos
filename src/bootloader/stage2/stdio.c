@@ -1,6 +1,28 @@
 #include "stdio.h"
 #include "x86.h"
 
+enum PrintfState
+{
+    PRINTF_STATE_NORMAL,
+    PRINTF_STATE_LENGTH,
+    PRINTF_STATE_LENGTH_SHORT,
+    PRINTF_STATE_LENGTH_LONG,
+    PRINTF_STATE_SPEC
+};
+
+enum PrintfLength
+{
+    PRINTF_LENGTH_DEFAULT,
+    PRINTF_LENGTH_SHORT,
+    PRINTF_LENGTH_SHORT_SHORT,
+    PRINTF_LENGTH_LONG,
+    PRINTF_LENGTH_LONG_LONG
+};
+
+static const char g_hexChars[] = "0123456789abcdef";
+
+static int* _printf_int(int* argp, enum PrintfLength length, bool sign, int radix);
+
 void putc(char c) {
     x86_Video_WriteCharTTY(c, 0);
 }
@@ -20,26 +42,6 @@ void puts_far(const char far* str)
         str++;
     }
 }
-
-enum PrintfState
-{
-    PRINTF_STATE_NORMAL,
-    PRINTF_STATE_LENGTH,
-    PRINTF_STATE_LENGTH_SHORT,
-    PRINTF_STATE_LENGTH_LONG,
-    PRINTF_STATE_SPEC
-};
-
-enum PrintfLength
-{
-    PRINTF_LENGTH_DEFAULT,
-    PRINTF_LENGTH_SHORT,
-    PRINTF_LENGTH_SHORT_SHORT,
-    PRINTF_LENGTH_LONG,
-    PRINTF_LENGTH_LONG_LONG
-};
-
-static int* printf_int(int* argp, enum PrintfLength length, bool sign, int radix);
 
 void _cdecl printf(const char* fmt, ...) {
     int *argp = (int*)&fmt;
@@ -129,13 +131,13 @@ PRINTF_STATE_SPEC_:
             case 'i':
                 radix = 10;
                 sign = true;
-                argp = printf_int(argp, length, sign, radix);
+                argp = _printf_int(argp, length, sign, radix);
                 break;
 
             case 'u':
                 radix = 10;
                 sign = false;
-                argp = printf_int(argp, length, sign, radix);
+                argp = _printf_int(argp, length, sign, radix);
                 break;
 
             case 'x':
@@ -143,13 +145,13 @@ PRINTF_STATE_SPEC_:
             case 'p':
                 radix = 16;
                 sign = false;
-                argp = printf_int(argp, length, sign, radix);
+                argp = _printf_int(argp, length, sign, radix);
                 break;
 
             case 'o':
                 radix = 8;
                 sign = false;
-                argp = printf_int(argp, length, sign, radix);
+                argp = _printf_int(argp, length, sign, radix);
                 break;
 
             default:    // ignore invalid specifiers
@@ -171,9 +173,7 @@ PRINTF_STATE_SPEC_:
     }
 }
 
-static const char g_hexChars[] = "0123456789abcdef";
-
-int* printf_int(int* argp, enum PrintfLength length, bool sign, int radix) {
+int* _printf_int(int* argp, enum PrintfLength length, bool sign, int radix) {
     char buffer[32];
     unsigned long long number;
     int number_sign = 1;
