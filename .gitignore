@@ -1,8 +1,12 @@
 .vscode/
 build/
+toolchain/
 *.err
 *.o
+*.obj
 *.bin
 *.map
 *.img
-bigtext.txt
+*.tar
+*.xz
+bx_enh_dbg.ini

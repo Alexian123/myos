@@ -1,10 +1,10 @@
 #ifndef __FAT_H__
 #define __FAT_H__
 
-#include "stdint.h"
-#include "disk.h"
+#include <stdint.h>
+#include <stdbool.h>
 
-#pragma pack(push, 1)
+#include "disk.h"
 
 typedef struct
 {
@@ -20,9 +20,7 @@ typedef struct
     uint16_t modifiedDate;
     uint16_t firstClusterLow;
     uint32_t size;
-} FAT_DirectoryEntry;
-
-#pragma pack(pop)
+} __attribute__((packed)) FAT_DirectoryEntry;
 
 typedef struct
 {
@@ -44,9 +42,9 @@ enum FAT_Attributes
 };
 
 bool FAT_init(DISK* disk);
-FAT_File far* FAT_open(DISK* disk, const char* path);
-uint32_t FAT_read(DISK* disk, FAT_File far* file, uint32_t numBytes, void *dataOut);
-bool FAT_readEntry(DISK* disk, FAT_File far* file, FAT_DirectoryEntry *entryOut);
-void FAT_close(FAT_File far* file);
+FAT_File* FAT_open(DISK* disk, const char* path);
+uint32_t FAT_read(DISK* disk, FAT_File* file, uint32_t numBytes, void *dataOut);
+bool FAT_readEntry(DISK* disk, FAT_File* file, FAT_DirectoryEntry *entryOut);
+void FAT_close(FAT_File* file);
 
 #endif

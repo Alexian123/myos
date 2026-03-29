@@ -1,7 +1,8 @@
 #ifndef __CTYPE_H__
 #define __CTYPE_H__
 
-#include "stdint.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 char toupper(char c);
 char tolower(char c);

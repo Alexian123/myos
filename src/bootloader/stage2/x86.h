@@ -1,23 +1,23 @@
 #ifndef __X86_H__
 #define __X86_H__
 
-#include "stdint.h"
+#include <stdint.h>
+#include <stdbool.h>
 
-extern void _cdecl x86_Div64_32(uint64_t dividend, uint32_t divisor, uint64_t* quotOut, uint32_t* remOut);
+extern void __attribute__((cdecl)) x86_outb(uint16_t port, uint8_t value);
+extern uint8_t __attribute__((cdecl)) x86_inb(uint16_t port);
 
-extern void _cdecl x86_Video_WriteCharTTY(char c, uint8_t page);
+extern bool __attribute__((cdecl)) x86_Disk_Reset(uint8_t drive);
 
-extern bool _cdecl x86_Disk_Reset(uint8_t drive);
-
-extern bool _cdecl x86_Disk_Read(
+extern bool __attribute__((cdecl)) x86_Disk_Read(
     uint8_t drive, 
     uint16_t cylinder, 
-    uint16_t head, 
-    uint16_t sector, 
-    uint8_t count, 
-    void far* dataOut);
+    uint16_t sector,
+    uint16_t head,
+    uint8_t count,
+    void* dataOut);
 
-extern bool _cdecl x86_Disk_GetDriveParams(
+extern bool __attribute__((cdecl)) x86_Disk_GetDriveParams(
     uint8_t drive,
     uint8_t* typeOut,
     uint16_t* cylindersOut,

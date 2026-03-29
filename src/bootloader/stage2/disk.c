@@ -5,27 +5,27 @@ static void _DISK_lbaToCHS(DISK* disk, uint32_t lba, uint16_t* cylinderOut, uint
 
 bool DISK_init(DISK* disk, uint8_t driveNumber) {
     uint8_t driveType;
-    uint16_t cylinders, sectors, heads;
+    uint16_t cylinders, heads, sectors;
 
     if (!x86_Disk_GetDriveParams(disk->id, &driveType, &cylinders, &sectors, &heads)) {
         return false;
     }
 
     disk->id = driveNumber;
-    disk->cylinders = cylinders + 1;
+    disk->cylinders = cylinders;
     disk->sectors = sectors;
-    disk->heads = heads + 1;
+    disk->heads = heads;
 
     return true;
 }
 
-bool DISK_readSectors(DISK* disk, uint32_t lba, uint8_t sectors, void far* dataOut) {
+bool DISK_readSectors(DISK* disk, uint32_t lba, uint8_t sectors, void* dataOut) {
     uint16_t cylinder, head, sector;
     _DISK_lbaToCHS(disk, lba, &cylinder, &head, &sector);
 
     // attempt to read from the disk multiple times
     for (int i = 0; i < 3; ++i) {
-        if (x86_Disk_Read(disk->id, cylinder, head, sector, sectors, dataOut)) {
+        if (x86_Disk_Read(disk->id, cylinder, sector, head, sectors, dataOut)) {
             return true;
         }
         x86_Disk_Reset(disk->id);

@@ -1,7 +1,8 @@
 #ifndef __DISK_H__
 #define __DISK_H__
 
-#include "stdint.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -12,6 +13,6 @@ typedef struct
 } DISK;
 
 bool DISK_init(DISK* disk, uint8_t driveNumber);
-bool DISK_readSectors(DISK* disk, uint32_t lba, uint8_t sectors, void far* dataOut);
+bool DISK_readSectors(DISK* disk, uint32_t lba, uint8_t sectors, void* dataOut);
 
 #endif
