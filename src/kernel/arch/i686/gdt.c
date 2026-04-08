@@ -30,7 +30,7 @@ typedef struct
 
 typedef struct
 {
-    uint16_t limit;                 // sizeof(GDT) - 1
+    uint16_t limit;             // sizeof(GDT) - 1
     GDTEntry* ptr;              // address of GDT 
 } __attribute__((packed)) GDTDescriptor;
 
