@@ -1,5 +1,5 @@
 #include "stdio.h"
-#include "x86.h"
+#include "arch/i686/io.h"
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -24,7 +24,7 @@ enum PrintfLength
 
 static const unsigned SCREEN_WIDTH = 80;
 static const unsigned SCREEN_HEIGHT = 25;
-static const uint8_t DEFAULT_COLOR = 0x7;
+static const uint8_t DEFAULT_COLOR = 0x2;   // 0x2 = green on black, 0x7 = white on black
 static const char HEX_CHARS[] = "0123456789abcdef";
 
 static uint8_t* g_screenBuffer = (uint8_t*)0xB8000;
@@ -257,6 +257,7 @@ PRINTF_STATE_SPEC_:
             length = PRINTF_LENGTH_DEFAULT;
             radix = 10;
             sign = false;
+            number = false;
             break;
 
         default:

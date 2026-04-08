@@ -257,6 +257,7 @@ PRINTF_STATE_SPEC_:
             length = PRINTF_LENGTH_DEFAULT;
             radix = 10;
             sign = false;
+            number = false;
             break;
 
         default:

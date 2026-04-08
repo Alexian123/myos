@@ -4,7 +4,7 @@ include config/config.mk
 
 all: floppy_image tools_fat
 
-include toolchain.mk
+include config/toolchain.mk
 
 #
 # Run in QEMU
