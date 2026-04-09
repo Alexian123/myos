@@ -13,3 +13,9 @@ x86_inb:
     xor eax, eax
     in al, dx
     ret
+
+global i686_panic
+i686_panic:
+    [bits 32]
+    cli
+    hlt

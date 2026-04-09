@@ -13,8 +13,10 @@ void __attribute__((section(".entry"))) start(uint16_t bootDrive) {
     HAL_init();
 
     clrscr();
+
     printf("Hello, Kernel!\n");
     
+
 halt:
     for (;;);
 }
